@@ -349,7 +349,8 @@ function tick_4_1() {
     root.render(element_4_1);
 }
 
-setInterval(tick_4_1, 1000);
+// zakommentirovala poka
+//setInterval(tick_4_1, 1000);
 
 // Сделаем компонент Clock переиспользуемым и инкапсулированным 
 function Clock_4_2(props) {
@@ -365,7 +366,8 @@ function tick_4_2() {
     root.render(<Clock_4_2 date={new Date()} />)
 }
 
-setInterval(tick_4_2, 1000);
+// zakommentirovala poka
+// setInterval(tick_4_2, 1000);
 
 // Но пока тоже не то - мы хотим написать так и не париться: root.render(<Clock />);
 
@@ -380,3 +382,283 @@ class Clock_4_3 extends React.Component {
         );
     }
 }
+
+// Далее - добавляем локальное состояние в класс 
+class Clock_4_4 extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {date: new Date()};
+    }
+
+    // Специальные методы жизненного цикла компонента 
+    // Вызывается после того, как выходные данные компонента отрисовались в DOM 
+    // Здесь можно объявить таймер 
+    componentDidMount() {
+        // Можно добавлять доп атрибуты, не участвующие в потоке данных
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        this.setState({
+            date: new Date()
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>Sample local state</h1>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+        );
+    }
+}
+
+root.render(<Clock_4_4 />);
+
+// Важно настроить таймер один раз при первой отрисовке в DOM - называется "монтирование"
+// Также необходимо убрать данный таймер - когда часы будут убраны - называется "демонтирование"
+
+/*
+    Правильное использование state:
+
+    1. НЕ ИЗМЕНЯТЬ state НАПРЯМУЮ:
+    this.state.comment = 'Hello'; // НЕПРАВИЛЬНО - не отрисует компонент 
+    this.setState({comment: 'Hello'}); // ПРАВИЛЬНО 
+
+    Единственное место, где можно назначать this.state - конструктор 
+
+    2. ОБНОВЛЕНИЕ state МОЖЕТ БЫТЬ АСИНХРОННЫМ 
+    React может объединять несколько вызовов setState() в единое обновление для производительности 
+    Тк this.props и this.state могут обновляться асинхронно, не стоит рассчитывать на их значения при вычислении следующего состояния 
+
+    НЕПРАВИЛЬНО:
+    this.setState({
+        counter: this.state.counter + this.props.increment,
+    });
+
+    Следует использовать другую форму setState(), принимающую функцию, а не объект 
+    Функция получит предыдущий state в качестве первого аргумента, 
+    а props в момент, когда применено обновление, в качестве второго аргумента 
+    ПРАВИЛЬНО: 
+    this.setState((state, props) => ({
+        counter: state.counter + props.increment
+    }));
+
+    или не через стрелочную функцию:
+    this.setState(function(state, props) {
+        return {
+            counter: state.counter + props.increment
+        }
+    });
+
+    3. ОБНОВЛЕНИЯ state ОБЪЕДИНЯЮТСЯ 
+
+    Например, state может содержать несколько независимых переменных 
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: [],
+            comments: []
+        };
+    }
+
+    Затем происходит их независимое обновление при помощи различных вызовов setState():
+    componentDidMount() {
+
+        fetchPosts().then(response => {
+            this.setState({
+                posts: response.posts
+            });
+        });
+
+        fetchComments().then(response => {
+            this.setState({
+                comments: response.comments
+            });
+        });
+
+    }
+
+    Объединение неглубокое, 
+    поэтому this.setState({comments}) оставляет this.state.posts таким же,
+    но полностью заменяет this.state.comments 
+*/
+
+/*
+    Локальное или независимое состояние компонента 
+
+    Ни родительские, ни дочерние компоненты не могут знать о том, содержит ли какой-либо компонент состояние или нет, 
+    и их не должно волновать определен он в качестве функции или класса. 
+    Поэтому состояние часто называют локальным или инкапсулированным. 
+    Оно недоступно для любого компонента, кроме того, что владеет и выставляет его.
+
+    В компоненте может передаваться его состояние - как свойство в дочерние компоненты: 
+    <FormattedDate date={this.state.date} />
+
+    Компонент FormattedDate получит date в качестве свойств, и не будет знать: 
+    прнишло ли это из состояния Clock, свойств Clock или было напечатано ручками 
+    function FormattedDate(props) {
+        return <h2>It is {props.date.toLocaleTimeSteing()}.</h2>;
+    }
+*/
+
+
+/************************** Обработка событий ******************************/
+
+/*
+    Похоже на обработку событий элементов DOM, но есть различия в синтаксисе:
+    - События React называются в camelCase, а не в нижнем регистре 
+    - При помощи JSX можно передать функцию в качестве обработчика событий, а не строку 
+
+    Например в HTML:
+    <button onclick="activateLasers()">
+        Activate lasers 
+    </button>
+
+    А в React: 
+    <button onClick={activateLasers}>
+        Activate lasers 
+    </button>
+*/
+
+/*
+    Другое отличие - нельзя возвращать false, чтобы предотвратить поведение по умолчанию в React 
+    Необходимо вызвать preventDefault явно, например, если для простого HTML необходимо предотвратить 
+    поведение формы по умолчанию при submit, делается так: 
+
+    <form onsubmit="console.log('You clicked submit.'); return false">
+        <button type="submit">Submit</button>
+    </form>
+
+    В React это будет выглядеть так: 
+    function Form() {
+
+        // Здесь e - синтетическое событие 
+        // Не работают так, как нативные события - смотреть SyntheticEvent для подробностей 
+        function handleSubmit(e) {
+            a.preventDefault();
+            console.log("You clicked submit.");
+        }
+
+        return (
+            <form onSubmit={handleSubmit}>
+                <button type="submit">Submit</button>
+            </form>
+        );
+    }
+*/
+
+/*
+    При использовании React не нужно вызывать addEventListener для добавления 
+    слушателей к элементу DOM после того, как он создан. 
+    Вместо этого, необходимо предоставить слушателя, когда элемент сразу же отрисован. 
+
+    При определении компонента через класс ES6 - общий паттерн: 
+    Обработчик событий должен быть методом класса, пример ниже 
+*/
+class Toogle extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isToogleOn: true};
+
+        // Такая привязка обязательна, чтобы переменная this работала при обратном вызове 
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        this.setState(prevState => ({
+            isToogleOn: !prevState.isToogleOn
+        }));
+    }
+
+    render() {
+        return (
+            <button onClick={this.handleClick}>
+                {this.state.isToogleOn ? 'ON' : 'OFF'}
+            </button>
+        );
+    }
+}
+
+root.render(<Toogle />);
+
+/*
+    Следует быть осторожным по отношению к значению this в обратных вызовах JSX
+    Методы класса не привязаны по умолчанию.
+    Если забыть привязать this.handleClick и передать его в onClick - то this будет undefined, 
+    когда функция действительно вызвана. 
+
+    Так работают функции в js - в общих словах, если обращаться к методу без скобок, например: 
+    onClick = {this.handleClick} - необходимо привязать этот метод 
+*/
+
+// Если вызов bind раздражает, то есть два способа обойти это: 
+
+// 1. Использование экспериментального синтаксиса для публичных полей класса 
+class LoggingButton extends React.Component {
+    // Этот синтаксис гарантирует, что this будет привязано внутри handleClick 
+    // Но синтаксис - экспериментальный 
+
+    handleClick = () => {
+        console.log("This is", this);
+    }
+
+    render() {
+        return (
+            <button onClick={this.handleClick}>
+                Click me 
+            </button>
+        );
+    }
+}
+
+root.render(<LoggingButton />);
+
+/*
+    Основная проблема с этим синтаксисом: 
+    Создается различный колбэк каждый раз при отрисовке компонента 
+
+    Если этот коллбэк передан в качестве свойства в нижние компоненты - 
+    то этим компонентам может потребоваться дополнительная перерисовка 
+
+    Рекомендуется выполнять привязку или в конструкторе, или использую синтаксис полей класса, 
+    для того, чтобы избежать проблем с производительностью.
+*/
+class LoggingButtonArrowFunctionBind extends React.Component {
+    handleClick() {
+        console.log("this is:", this);
+    }
+
+    render() {
+        // Этот синтаксис гарантирует, что this привязано внутри handleClick 
+        return (
+            <button onClick={() => this.handleClick()}>
+                Click me plz!
+            </button>
+        );
+    }
+}
+
+root.render(<LoggingButtonArrowFunctionBind />);
+
+/*
+    Передача параметров в обработчики событий 
+
+    Общая потребность - передать внутри цикла дополнительный параметр в обработчик события. 
+    Например, если id - идентификатор строки, то следующее будет работать: 
+
+    <button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+    или 
+    <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+
+    В обоих случаях e - аргумент, представляющий из себя событие React, которое будет передано в качестве второго аргумента
+    после идентификатора.
+*/
