@@ -662,3 +662,390 @@ root.render(<LoggingButtonArrowFunctionBind />);
     В обоих случаях e - аргумент, представляющий из себя событие React, которое будет передано в качестве второго аргумента
     после идентификатора.
 */
+
+/************************** Условная отрисовка ******************************/
+
+function UserGreeting(props) {
+    return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+    return <h1>Please sign up.</h1>;
+}
+
+function Greeting(props) {
+    const isLoggedIn = props.isLoggedIn;
+
+    if (isLoggedIn) {
+        return <UserGreeting />;
+    }
+    return <GuestGreeting />;
+}
+
+root.render(<Greeting isLoggedIn={false} />);
+
+// Можно использовать переменные для хранения элементов 
+function LoginButton(props) {
+    return (
+        <button onClick={props.onClick}>
+            Login
+        </button>
+    );
+}
+
+function LogoutButton(props) {
+    return (
+        <button onClick={props.onClick}>
+            Logout
+        </button>
+    );
+}
+
+class LoginControl extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleLoginClick = this.handleLoginClick.bind(this);
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+        this.state = {isLoggedIn: false};
+    }
+
+    handleLoginClick() {
+        this.setState({isLoggedIn: true});
+    }
+
+    handleLogoutClick() {
+        this.setState({isLoggedIn: false});
+    }
+
+    render() {
+        const isLoggedIn = this.state.isLoggedIn;
+        let button;
+        if (isLoggedIn) {
+            button = <LogoutButton onClick={this.handleLogoutClick} />;
+        } else {
+            button = <LoginButton onClick={this.handleLoginClick} />;
+        }
+
+        return (
+            <div>
+                <Greeting isLoggedIn={isLoggedIn} />
+                {button}
+            </div>
+        );
+    }
+}
+
+root.render(<LoginControl />);
+
+// Можно использовать выражения покороче внутри jsx при помощи логического оператора соединения - &&
+function Mailbox(props) {
+    const unreadMessages = props.unreadMessages;
+    return (
+        <div>
+            <h1>Hello!</h1>
+            {unreadMessages.length > 0 &&
+                <h2>
+                    You have {unreadMessages.length} unread messages.
+                </h2>
+            }
+        </div>
+    );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+root.render(<Mailbox unreadMessages={messages} />);
+
+// Использование тернарного выражения 
+// Пример 1 
+class TernarOne extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isLoggedIn: false};
+    }
+
+    render() {
+        const isLoggedIn = this.state.isLoggedIn;
+        return (
+            <div>
+                The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
+            </div>
+        );
+    }
+}
+
+root.render(<TernarOne />);
+
+// Пример 2 
+class TernarTwo extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleLoginClick = this.handleLoginClick.bind(this);
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+        this.state = {isLoggedIn: false};
+    }
+
+    handleLoginClick() {
+        this.setState({isLoggedIn: true});
+    }
+
+    handleLogoutClick() {
+        this.setState({isLoggedIn: false});
+    }
+
+    render() {
+        const isLoggedIn = this.state.isLoggedIn;
+        return (
+            <div>
+                {isLoggedIn
+                    ? <LogoutButton onClick={this.handleLogoutClick} />
+                    : <LoginButton onClick={this.handleLoginClick} />
+                }
+            </div>
+        );
+    }
+
+}
+
+root.render(<TernarTwo />);
+
+/*
+    Предотвращение отрисовки компонента 
+
+    В редких случаях может быть необходимость спрятать компонент, даже если он был отрисован другим компонентом.
+    Для этого необходимо вернуть null в выходных данных отрисовки 
+*/
+
+function WarningBanner(props) {
+    if (!props.warn) {
+        return null;
+    }
+
+    return (
+        <div className="warning">
+            Warning!
+        </div>
+    );
+}
+
+class Page extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {showWarning: true};
+        this.handleToogleClick = this.handleToogleClick.bind(this);
+    }
+
+    handleToogleClick() {
+        this.setState(state => ({
+            showWarning: !state.showWarning
+        }));
+    }
+
+    render() {
+        return (
+            <div>
+                <WarningBanner warn={this.state.showWarning} />
+                <button onClick={this.handleToogleClick}>
+                    {this.state.showWarning ? 'Hide' : 'Show'}
+                </button>
+            </div>
+        );
+    }
+}
+
+root.render(<Page />);
+
+// Но возврат null из метода компонента render() не предотвращает запуск методов жизненного цикла компонента 
+// Например, componentDidUpdate будет вызван все равно
+
+/************************** Списки и ключи ******************************/
+
+/*
+    Пример преобразования списков в js 
+
+    const numbers = [1, 2, 3, 4, 5];
+    const doubled = numbers.map((number) => number * 2);
+    console.log(doubled);
+*/
+
+// Отрисовка множества компонентов 
+// Можно собирать коллекции элементы и включать их в JSX при помощи фигурных скобок 
+const numbers_8 = [1, 2, 3, 4, 5];
+const listItems_8 = numbers_8.map((number) => 
+    <li>{number}</li>
+);
+
+//zakommentirovala poka
+//root.render(<ul>{listItems_8}</ul>);
+
+// Простой списочный компонент 
+function NumberList(props) {
+    const numbers = props.numbers;
+    // ключ позволяет React-у понять, какие элементы изменились, добавились и удалились
+    // их необходимо раздавать элементам внутри массива (коллекции), чтобы дать стабильную идентификацию
+    const listItems = numbers.map((number) =>
+        <li key={number.toString()}>
+            {number}
+        </li>
+    );
+    return (
+        <ul>{listItems}</ul>
+    );
+}
+
+const numbers_8_1 = [10, 20, 30, 40, 50];
+root.render(<NumberList numbers={numbers_8_1} />);
+
+/*
+    Лучший способ выбрать ключ - использовать строку, уникально идентифицирующую элемент из списка среди остальных 
+    Чаще всего используются ID из данных в качестве ключей 
+
+    const todoItems = todos.map((todo) =>
+        <li key={todo.id}>
+            {todo.text}
+        </li>
+    );
+
+    Когда нет стабильного идентификатора для отрисованных элементов можно использовать индекс элемента - но это стоит делать в самом крайнем случае:
+    const todoItems = todos.map((todo, index)
+        // Выполнять только тогда, когда у элементов нет стабильных идентификаторов 
+        <li key={index}>
+            {todo.text}
+        </li>
+    );
+*/
+
+/*
+Выбор компонентов для добавления ключей 
+Основной посыл - ключи имеют смысл только в контексте окружающего их массива
+Правило: Элементы внутри вызова map() нуждаются в ключах
+
+1. Пример неправильного использования 
+
+function ListItem_Wrong(props) {
+    const value = props.value;
+    return (
+        // НЕПРАВИЛЬНО. Нет нужды указывать ключ здесь 
+        <li key={value.toString()}>
+            {value}
+        </li>
+    );
+}
+
+function NumberList_Wrong(props) {
+    const number = props.numbers;
+    const listItems = numbers.map((number) => 
+        // Нужно было указать ключ здесь 
+        <ListItem value={number} />
+    );
+    return (
+        <ul>
+            {listItems}
+        </ul>
+    );
+}
+
+function ListItem_Correct(props) {
+    // Правильно, здесь не надо указывать ключ 
+    return <li>{props.value}</li>;
+}
+
+function NumberList_Correct(props) {
+    const numbers = props.numbers;
+    const listItems = numbers.map((number) =>
+        // Правильно, ключ необходимо указывать внутри массива 
+        <ListItem key={number.toString()} value={number} />
+    );
+    return (
+        <ul>
+            {listItems}
+        </ul>
+    );
+}
+
+*/
+
+/*
+    Ключи должны быть уникальны только среди элементов массива, а не глобально
+    Например, использование тех же самых ключей допустимо для двух разных массивов:
+*/
+function Blog(props) {
+    const sidebar = (
+        <ul>
+            {props.posts.map((post) => 
+                <li key={post.id}>
+                    {post.title}
+                </li>
+            )}
+        </ul>
+    );
+
+    const content = props.posts.map((post) => 
+        <div key={post.id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+        </div>
+    );
+
+    return (
+        <div>
+            {sidebar}
+            <hr />
+            {content}
+        </div>
+    );
+}
+
+const posts = [
+    {id: 1, title: "Hello Man", constant: "Welcome to learning React!"},
+    {id: 2, title: "Installation", constant: "You can install react from npm"},
+]
+
+root.render(<Blog posts={posts} />);
+
+// Ключи служат подсказкой для React, но не передаются в компоненты 
+// Если эти значения нужны, то необходимо передать их явно в качестве свойства с другим именем 
+// В пример ниже, компонент Post может читать props.id, но не может читать props.key 
+/*
+    const content = posts.map((post) => 
+        <Post
+            key={post.id}
+            id={post.id}
+            title={post.title} />
+    );
+*/
+
+// Реализация map() в JSX 
+
+function ListItem_Correct(props) {
+    // Правильно, здесь не надо указывать ключ 
+    return <li>{props.value}</li>;
+}
+
+function NumberList_8_1(props) {
+    const numbers = props.numbers;
+    const listItems = numbers.map((number) => 
+        <ListItem_Correct key={number.toString()}
+            value={number} />
+    );
+    return (
+        <ul>
+            {listItems}
+        </ul>
+    )
+}
+
+// JSX позволяет встроить любое выражение в фигурных скобках, поэтому можно сразу же сгенерировать результат map()
+function NumberList_8_2(props) {
+    const numbers = props.numbers;
+    return (
+        <ul>
+            {numbers.map((number) => 
+                <ListItem_Correct key={number.toString()}
+                    value={number} />
+            )}
+        </ul>
+    );
+}
+
+root.render(<NumberList_8_2 numbers={[11,22,33,44,55]} />);
