@@ -1049,3 +1049,255 @@ function NumberList_8_2(props) {
 }
 
 root.render(<NumberList_8_2 numbers={[11,22,33,44,55]} />);
+
+/************************** Формы ******************************/
+
+/*
+    Принцип работы форм HTML отличается от других DOM элементов в React, 
+    т.к элементы формы обычно сохраняют внутреннее состояние.
+    Например, эта форма на простом HTML принимает одно имя:
+
+    У формы стандартное поведение - переход на новую страницу, когда пользователь сабмиттит форму.
+    В React - это стандартное поведение, но в большинстве случаев есть потребность иметь js-функцию,
+    которая обрабатывает отправку формы и имеет доступ к данным, который пользователь ввел в форму. 
+
+    Стандартный способ реализовать это - техника "контролируемых компонентов"
+
+    <form>
+        <label>
+            Name:
+            <input type="text" name="name" />
+        </label>
+        <input type="submit" value="Submit" />
+    </form>
+*/
+
+/*
+    В HTML такие элементы форм, как <input>, <textarea> и <select> обычно поддерживают состояние внутри себя,
+    и обновляют его исходя из введенных пользователем значений 
+
+    В React изменяемое состояние хранится в state и обновляется через setState()
+*/
+
+class NumberForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: ''}
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name:
+                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        );
+    }
+}
+
+root.render(<NumberForm />);
+
+/*
+    Пример с <textarea>
+
+    В HTML элемент <textarea> определяет свой текст при помощи своих детей 
+
+    <textarea>
+        Sample text 
+    </textarea>
+
+    Но в React <textarea> использует атрибута <value>
+*/
+
+class EssayForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 'Please write an essay about your favorite DOM element.'
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('An essay was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Essay:
+                    <textarea value={this.state.value} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        );
+    }
+}
+
+root.render(<EssayForm />);
+
+/*
+    Тэг <select> создает выпадающий список 
+    Например, этот HTML создает выпадающий список из вкусов
+
+    <select>
+        <option value="grapefruit">Grapefruit</option>
+        <option value="lime">Lime</option>
+        <option selected value="coconut">Coconut</option>
+        <option value="mango">Mango</option>
+    </select>
+
+    Но в React вместо атрибута selected - используется атрибут value корневого тега select 
+    Более удобно, тк в контролируемом компоненте требуется обновить только в одном месте 
+*/
+
+class FlavorForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: 'coconut'};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('Your favorite flavor is: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Pick your favorite flavor:
+                    <select value={this.state.value} onChange={this.handleChange}>
+                        <option value="grapefruit">Grapefruit</option>
+                        <option value="lime">Lime</option>
+                        <option selected value="coconut">Coconut</option>
+                        <option value="mango">Mango</option>
+                    </select>
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        );
+    }
+}
+    
+root.render(<FlavorForm />);
+
+/*
+    Примечание: 
+    Можно передать массив в атрибут value, чтобы пометить, что выбрано несколько опций в теге <select>:
+
+    <select multiple={true} value={['B', 'C']}>
+*/
+
+/*
+    Тег <input type="file"> позволяет пользователю выбрать один или более файлов с устройства 
+    для загрузки на сервер или манипуляции через JS при помощи File API 
+
+    Из-за того, что значение этого тега только на чтение, он является неконтролируемым в react 
+*/
+
+/*
+    Обработка нескольких input-ов 
+    Для этого можно добавить атрибут name к каждому элементу, и рещать, что делать на базе значений event.target.name 
+*/
+
+class Reservation extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isGoing: true,
+            numberOfGuests: 2
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        // Вычисляемое название свойства
+        this.setState({
+            [name]: value
+        });
+
+        /*
+            Эквивалентно следующему коду ES5:
+            var partialState = {};
+            partialState[name] = value;
+            this.setState(partialState);
+        */
+    }
+
+    render() {
+        return (
+            <form>
+                <label>
+                    Is going:
+                    <input
+                        name="isGoing"
+                        type="checkbox"
+                        checked={this.state.isGoing}
+                        onChange={this.handleInputChange}
+                    />
+                </label>
+                <br />
+                <label>
+                    Number of guests:
+                    <input 
+                        name="numberOfGuests"
+                        type="number"
+                        value={this.state.numberOfGuests}
+                        onChange={this.handleInputChange}
+                    />
+                </label>
+            </form>
+        );
+    }
+}
+
+root.render(<Reservation />);
+
+/*
+    Контроль редактирования Input при помощи значения null 
+
+    Указание свойства value у контролируемого компонента предотвращает пользователя от изменения input, пока этого не захочет разработчик.
+    Если value указано, но input редактируемый, то можно случайно выставить value в undefined или null 
+*/
+
+root.render(<input value="hi" />);
+
+setTimeout(function() {
+    root.render(<input value={null} />);
+}, 5000);
