@@ -1450,3 +1450,156 @@ class Calculator_10_2 extends React.Component {
 root.render(<Calculator_10_2 />);
 
 // Осознать почему в предыдущем примере обновляется оба инпута - на момент написания этого мне это удалось 
+
+/************************** Композиция vs Наследование ******************************/
+
+// В React мощная модель композиции, и рекомендуется использовать её вместо наследования, 
+// чтобы переиспользовать существующий код между компонентами 
+
+/*
+    Заключение (или задержание или удерживание или сокрытие) - вообщем Containment 
+    Некоторые компоненты не знают о своих детях, например Sidebar или Dialog - являющиеся универсальными коробками 
+    Рекомендуется, чтобы такие компоненты использовали свойство children для передачи его напрямую: 
+    Это позволяет другим компонентам передавать произвольных детей, путем их вложения в JSX:
+*/
+
+function FancyBorder(props) {
+    return (
+        <div className={'FancyBorder FancyBorder-' + props.color}>
+            {props.children}
+        </div>
+    );
+}
+
+function WelcomeDialog() {
+    return (
+        <FancyBorder color="blue">
+            <h1 className="Dialog-title">
+                Welcome
+            </h1>
+            <p className="Dialog-message">
+                Thank you for visiting our spacecraft!
+            </p>
+        </FancyBorder>
+    );
+}
+
+root.render(<WelcomeDialog />);
+
+
+/*
+    Рассмотрим случай, когда необходимо много дырок в компоненте, тогда творчество и отходим от использования props.children 
+
+    Элементы React можно также передавать как свойства.
+*/
+
+function Contacts() {
+    return <h1>Контакты</h1>;
+}
+
+function Chat() {
+    return <h1>Чат</h1>;
+}
+
+function SplitPane(props) {
+    return (
+        <div className="SplitPane">
+            <div className="SplitPane-left">
+                {props.left}
+            </div>
+            <div className="SplitPane-right">
+                {props.right}
+            </div>
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <SplitPane
+            left={
+                <Contacts />
+            }
+            right={
+                <Chat />
+            } />
+    );
+}
+
+root.render(<App />);
+
+/*
+    Иногда можно думать о компонентах - как о специальных случаях других компонентов 
+    Например, WelcomeDialog является частным случаем Dialog 
+
+    В React это достигается путем композиции, когда более специфичный компонент рендерит более универсальный, 
+    и наполняет его специфичными для частного компонента свойствами
+*/
+function Dialog_10(props) {
+    return (
+        <FancyBorder color="blue">
+            <h1 className="Dialog-title">
+                {props.title}
+            </h1>
+            <p className="Dialog-message">
+                {props.message}
+            </p>
+        </FancyBorder>
+    );
+}
+
+function WelcomeDialog_10() {
+    return (
+        <Dialog_10
+            title="Welcome"
+            message="Thank you for visiting our spacecraft!"
+        />
+    );
+}
+
+root.render(<WelcomeDialog_10 />);
+
+// Композиция работает одинаково хорошо для компонентов, которые определены как классы 
+function Dialog_10_1(props) {
+    return (
+        <FancyBorder color="blue">
+            <h1 className="Dialog-title">
+                {props.title}
+            </h1>
+            <p className="Dialog-message">
+                {props.message}
+            </p>
+            {props.children}
+        </FancyBorder>
+    );
+}
+
+class SignupDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSignUp = this.handleSignUp.bind(this);
+        this.state = {login: ''};
+    }
+
+    handleChange(e) {
+        this.setState({login: e.target.value});
+    }
+
+    handleSignUp() {
+        alert(`Welcome aboard, ${this.state.login}!`);
+    }
+
+    render() {
+        return (
+            <Dialog_10_1 title="Mars Exploration Program" message="How should we refer to you?">
+                <input value={this.state.login} onChange={this.handleChange} />
+                <button onClick={this.handleSignUp}>
+                    Sign me up!
+                </button>
+            </Dialog_10_1>
+        );
+    }
+}
+
+root.render(<SignupDialog />);
