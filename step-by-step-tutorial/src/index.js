@@ -1312,14 +1312,14 @@ setTimeout(function() {
     Рекомендуется выносить совместное состояние наверх до ближайшего общего родителя 
 */
 
-function BoilingVerdict(props) {
+function BoilingVerdict_10_1(props) {
     if (props.celsius >= 100) {
         return <p>The water would boil.</p>;
     }
     return <p>The water would not boil.</p>;
 }
 
-class Calculator extends React.Component {
+class Calculator_10_1 extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -1339,11 +1339,114 @@ class Calculator extends React.Component {
                     value={temperature}  
                     onChange={this.handleChange}
                 />
-                <BoilingVerdict
+                <BoilingVerdict_10_1
                     celsius={parseFloat(temperature)} />
             </fieldset>
         );
     }
 }
 
-root.render(<Calculator />);
+root.render(<Calculator_10_1 />);
+
+// Добавление второй формы ввода 
+/*
+    Вынесение TemperatureInput из Calculator 
+    Чтобы обе формы обновлялись, при обновлении каждой из них - 
+    необходимо вынести состояние компонентов на уровень их общего родителя 
+    В нашем случае - это Calculator 
+*/
+
+const scaleNames = {
+    c: 'Celsius',
+    f: 'Fahrenheit'
+};
+
+// Функции конвертации из C в F и наоборот 
+function toCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
+}
+
+// Универсальная функция преобразования 
+function tryConvert(temperature, convert) {
+    const input = parseFloat(temperature);
+    if (Number.isNaN(input)) {
+        return '';
+    }
+    // Прикольно - convert - это функция 
+    const output = convert(input);
+    const rounded = Math.round(output * 1000) / 1000;
+    return rounded.toString();
+}
+
+class TemperatureInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        //this.state = {temperature: ''};
+    }
+
+    handleChange(e) {
+        //this.setState({temperature: e.target.value});
+        this.props.onTemperatureChange(e.target.value);
+    }
+
+    render() {
+        //const temperature = this.state.temperature;
+        const temperature = this.props.temperature;
+        const scale = this.props.scale;
+        return (
+            <fieldset>
+                <legend>Enter temperature in {scaleNames[scale]}</legend>
+                <input value={temperature}
+                    onChange={this.handleChange} />
+            </fieldset>
+        );
+    }
+}
+
+class Calculator_10_2 extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+        this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+        this.state = {temperature: '', scale: 'c'};
+    }
+
+    handleCelsiusChange(temperature) {
+        this.setState({scale: 'c', temperature});
+    }
+
+    handleFahrenheitChange(temperature) {
+        this.setState({scale: 'f', temperature});
+    }
+
+    render() {
+        const scale = this.state.scale;
+        const temperature = this.state.temperature;
+        const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+        const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+        return (
+            <div>
+                <TemperatureInput 
+                    scale="c"
+                    temperature={celsius}
+                    onTemperatureChange={this.handleCelsiusChange} />
+                <TemperatureInput 
+                    scale="f"
+                    temperature={fahrenheit}
+                    onTemperatureChange={this.handleFahrenheitChange} />
+                <BoilingVerdict_10_1 
+                    celsius={parseFloat(celsius)} />
+            </div>
+        );
+    }
+}
+
+root.render(<Calculator_10_2 />);
+
+// Осознать почему в предыдущем примере обновляется оба инпута - на момент написания этого мне это удалось 
