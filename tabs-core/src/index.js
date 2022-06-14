@@ -7,7 +7,7 @@ import './css/index.css';
 class Tabs extends React.Component {
     render() {
         return (
-            <div class="tab">
+            <div className="tab">
                 <TabButtonList />
             </div>
         );
@@ -42,7 +42,7 @@ class TabButton extends React.Component {
 
     render() {
         return (
-            <button class={this.getClasses()} onClick={this.onClick}>{this.props.caption}</button>
+            <button className={this.getClasses()} onClick={this.onClick}>{this.props.caption}</button>
         );
     }
 }
@@ -61,7 +61,7 @@ class TabButtonList extends React.Component {
         );
 
         return (
-            <div class="tab-buttons">
+            <div className="tab-buttons">
                 {buttons}
             </div>
         );
@@ -72,7 +72,7 @@ class TabButtonList extends React.Component {
 class LondonContent extends React.Component {
     render() {
         return (
-            <div id="London" class="tabcontent">
+            <div id="London" className="tabcontent">
                 <h3>London</h3>
                 <p>London is the capital city of England.</p>
             </div>
@@ -84,7 +84,7 @@ class LondonContent extends React.Component {
 class ParisContent extends React.Component {
     render() {
         return (
-            <div id="Paris" class="tabcontent">
+            <div id="Paris" className="tabcontent">
                 <h3>Paris</h3>
                 <p>Paris is the capital of France.</p>
             </div>
@@ -96,7 +96,7 @@ class ParisContent extends React.Component {
 class TokyoContent extends React.Component{
     render() {
         return (
-            <div id="Paris" class="tabcontent">
+            <div id="Paris" className="tabcontent">
                 <h3>Tokyo</h3>
                 <p>Tokyo is the capital of Japan.</p>
             </div>
