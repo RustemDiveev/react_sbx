@@ -8,37 +8,68 @@ export default class Tab extends React.Component {
 
     constructor(props) {
         super(props);
+
+        const contents = [
+            {
+                name: "London",
+                text: "London is the capital city of England"
+            },
+            {
+                name: "Paris",
+                text: "Paris is the capital of France"
+            },
+            {
+                name: "Tokyo",
+                text: "Tokyo is the capital of Japan"
+            },
+        ];
+
+        function prepare_content(content) {
+            let new_content = {...content};
+            new_content.isActive = false;
+            return new_content;
+        }
+
+        const state = contents.map(prepare_content);
         this.state = {
-            content: [
-                {
-                    header: "London",
-                    text: "London is the capital city of England"
-                },
-                {
-                    header: "Paris",
-                    text: "Paris is the capital of France"
-                },
-                {
-                    header: "Tokyo",
-                    text: "London is the capital of Japan"
-                },
-            ]
+            content: state, 
+            handleButtonClick: this.handleButtonClick
         };
     }
 
-    render() {
+    handleButtonClick(i) {
+        function getButtonState(button) {
+            let new_button = {...button};
+            new_button.isActive = true ? new_button.name === this.button_key : false;
+            return new_button;
+        }
 
-        const tabcontent = this.state.content.map((content) =>
+        let buttons_state = this.state.buttons.map(
+            getButtonState, {button_key: i}
+        );
+        
+        this.setState({
+            buttons: buttons_state
+        });
+    }
+
+    render() {
+        const content = this.state.content;
+        const tabcontent = content.map((obj) =>
             <TabContent
-                key={content.header}
-                header={content.header}
-                text={content.text}
+                key={obj.name}
+                header={obj.name}
+                text={obj.text}
             />
         );
 
+        const buttons = {buttons: this.state.content.map((content) => 
+            ({name: content.name, isActive: content.isActive})
+        )};
+
         return (
             <div className="tab">
-                <TabButtonList />
+                <TabButtonList buttons={buttons} />
                 {tabcontent}
             </div>
         );
