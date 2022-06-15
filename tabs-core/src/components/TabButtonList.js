@@ -4,43 +4,15 @@ import TabButton from './TabButton';
 
 
 export default class TabButtonList extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            buttons: [
-                {name: "London", isActive: false},
-                {name: "Paris", isActive: false},
-                {name: "Tokyo", isActive: false},
-            ]    
-        };
-    }
-    
-    handleButtonClick(i) {
-        function getButtonState(button) {
-            let new_button = button;
-            new_button.isActive = true ? button.name === this.button_key : false;
-            return new_button;
-        }
-
-        let buttons_state = this.state.buttons.map(
-            getButtonState, {button_key: i}
-        );
-        
-        this.setState({
-            buttons: buttons_state
-        });
-    }
-
     render() {
+        
+        const tab_buttons_props = this.props.buttons;
 
-        const buttons = this.state.buttons;
-
-        const tab_buttons = buttons.map((button) => 
+        const tab_buttons = tab_buttons_props.map((button) => 
             <TabButton 
                 key={button.name} 
                 caption={button.name} 
-                onClick={() => this.handleButtonClick(button.name)}
+                onClick={this.props.handleButtonClick}
                 isActive={button.isActive}
             />
         );

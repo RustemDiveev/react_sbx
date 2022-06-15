@@ -32,9 +32,10 @@ export default class Tab extends React.Component {
 
         const state = contents.map(prepare_content);
         this.state = {
-            content: state, 
-            handleButtonClick: this.handleButtonClick
+            content: state
         };
+
+        this.handleButtonClick = this.handleButtonClick.bind(this);
     }
 
     handleButtonClick(i) {
@@ -44,18 +45,18 @@ export default class Tab extends React.Component {
             return new_button;
         }
 
-        let buttons_state = this.state.buttons.map(
+        let buttons_state = this.state.content.map(
             getButtonState, {button_key: i}
         );
         
         this.setState({
-            buttons: buttons_state
+            content: buttons_state
         });
     }
 
     render() {
         const content = this.state.content;
-        const tabcontent = content.map((obj) =>
+        const tabcontent = content.filter((obj) => obj.isActive === true).map((obj) =>
             <TabContent
                 key={obj.name}
                 header={obj.name}
@@ -63,13 +64,13 @@ export default class Tab extends React.Component {
             />
         );
 
-        const buttons = {buttons: this.state.content.map((content) => 
+        const buttons = this.state.content.map((content) => 
             ({name: content.name, isActive: content.isActive})
-        )};
+        );
 
         return (
             <div className="tab">
-                <TabButtonList buttons={buttons} />
+                <TabButtonList buttons={buttons} handleButtonClick={this.handleButtonClick} />
                 {tabcontent}
             </div>
         );

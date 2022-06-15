@@ -4,6 +4,10 @@
     background-color: #f1f1f1;
 }
 
+.tab-buttons {
+    display: inline-block;
+}
+
 .tab button {
     background-color: inherit;
     float: left;

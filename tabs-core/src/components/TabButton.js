@@ -14,7 +14,7 @@ export default class TabButton extends React.Component {
 
     render() {
         return (
-            <button className={this.getClasses()} onClick={this.props.onClick}>
+            <button className={this.getClasses()} onClick={() => this.props.onClick(this.props.caption)}>
                 {this.props.caption}
             </button>
         );
