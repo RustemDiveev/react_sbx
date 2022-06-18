@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Асинхронные скрипты defer/async</h1>
+        <p>
+            Иллюстрировать принципы работы async и defer лучше на разных страницах:
+            Здесь также стоит упомянуть, что свойста async и defer доступны только для внешних скриптов!
+            Для демонстрации пользуюсь такой штукой: <a href="http://deelay.me/">http://deelay.me/</a>
+        </p>
+        <button>
+            <a href="./1_2_1_common_js_load.html">Пример обычной загрузки</a>
+        </button>
+        <button>
+            <a href="./1_2_2_async_js_load.html">Пример асинхронной загрузки</a>
+        </button>
+        <button>
+            <a href="./1_2_3_defer_js_load.html">Пример отложенной загрузки</a>
+        </button>
+
+        <h2>Пример</h2>
+        <p>Предположим, что на страницу подключаются два скрипта - small.js и big.js - первый загружается гораздо быстрее, чем второй.</p>
+
+        <p>Рассмотрим разные варианты подключения:</p> 
+
+        <code>
+            &lt;script&gt; src="big.js">&lt;/script&gt;
+            <br>
+            &lt;script&gt; src="small.js">&lt;/script&gt;
+        </code>
+
+        <p>
+            Первым выполнится big.js, а затем small.js - идет синхронная подгрузка.
+        </p>
+
+        <code>
+            &lt;script&gt; async src="big.js">&lt;/script&gt;
+            <br>
+            &lt;script&gt; async src="small.js">&lt;/script&gt;
+        </code>
+
+        <p>
+            Первым выполнится small.js, а затем big.js - идет асинхронная загрузка - браузеру плевать на порядок.
+        </p>
+
+        <code>
+            &lt;script&gt; defer src="big.js">&lt;/script&gt;
+            <br>
+            &lt;script&gt; defer src="small.js">&lt;/script&gt;
+        </code>
+
+        <p>
+            Первым выполнится big.js, а затем small.js - идет отложенная загрузка - отрисовка контента не блокируется, 
+            но скрипты выполняются в строго указанном порядке.
+        </p>
+
+    </body>
+
+</html>
