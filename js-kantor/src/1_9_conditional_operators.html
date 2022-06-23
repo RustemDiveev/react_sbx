@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+
+        <script src="./js/1_9_script1.js"></script>
+
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Условные операторы: if, '?'</h1>
+
+        <h2>Оператор if</h2>
+        <p>
+            Оператор получает условие, вычисляет его, и если результат true - то выполняет команду. 
+            <br>
+            Если нужно выполнить более одной команды, то они разделяются фигурными скобками. 
+            <br>
+            Рекомендуется использовать их всегда, так как это улучшает читабельность кода.
+        </p>
+
+        <h2>Преобразование к логическому типу</h2>
+        <ul>
+            <li><strong>false:</strong> - 0, "", null, undefined, NaN</li>
+            <li><strong>true:</strong> - все остальное</li>
+        </ul>
+
+        <h2>Несколько условий, else, else if - пример</h2>
+        <code>
+            if (year < 2022) {
+            <br>
+            &nbsp;alert("Too old!");
+            <br>
+            } else if (year < 2022) {
+            <br>
+            &nbsp;alert("Too late!");
+            <br>
+            } else {
+            <br>
+            &nbsp;alert("Exactly that year");
+            <br>
+            }
+        </code>
+
+        <h2>Оператор вопросительный знак ?</h2>
+        <p>
+            условие ? если true, то значение 1 : если false, то значение 2 
+        </p>
+        <p>
+            Можно делать цепочки:
+        </p>
+        <code>
+            var message = (age < 3) ? "Hello, baby!" : 
+            <br>
+            &nbsp;&nbsp;(age < 18) ? "Hello" : 
+            <br>
+            &nbsp;&nbsp;(age < 100) ? "Greetings" : "Are you dead?";
+        </code>
+
+        <h2>Задачи</h2>
+        <ol>
+            <li>
+                <p>Выведется ли alert?</p>
+                <code>
+                    if ("0") {
+                    <br>
+                        &nbsp;alert("DOUCHEBAG");
+                    <br>
+                    }
+                </code>
+                <p>
+                    <b>Ответ: </b> да, "0" это непустая строка, и преобразуется в true 
+                </p>
+            </li>
+            <li>
+                <p>Простой if/else</p>
+                <button onclick="task2()">Задание 2</button>
+                <div id="TASK2"></div>
+            </li>
+            <li>
+                <p>Получить знак числа</p>
+                <button onclick="task3()">Задание 3</button>
+                <div id="TASK3"></div>
+            </li>
+        </ol>
+
+    </body>
+
+</html>
