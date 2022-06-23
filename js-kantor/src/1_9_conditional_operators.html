@@ -84,6 +84,42 @@
                 <button onclick="task3()">Задание 3</button>
                 <div id="TASK3"></div>
             </li>
+            <li>
+                <p>Проверка логина</p>
+                <button onclick="task4()">Задание 4</button>
+                <div id="TASK4"></div>
+            </li>
+            <li>
+                <p>Перепишите if в ?</p>
+                <br>
+                <code>if (a + b < 4) {result = "Мало";} else {result = "Много";}</code>
+                <br>
+                <code>const result = (a + b < 4) ? "Мало" : "Много";</code> 
+            </li>
+            <li>
+                <p>Перепишите if..else в ?</p>
+                <code style="white-space: pre-line;">
+                    var message;
+
+                    if (login == "Vasya") {
+                        &nbsp;message = "Hello";
+                    } else if (login == "Director") {
+                        &nbsp;message = "Greetings";
+                    } else if (login == "") {
+                        &nbsp;message = "No login";
+                    } else {
+                        &nbsp;message = "";
+                    }
+                </code>
+                <p>
+                    Ответ:
+                </p>
+                <code style="white-space: pre-line;">
+                    const message = (login == "Vasya") ? "Hello" :
+                    &nbsp;(login == "Director") ? "Greetings" :
+                    &nbsp;(login == "") ? "No login" : "";
+                </code>
+            </li>
         </ol>
 
     </body>
