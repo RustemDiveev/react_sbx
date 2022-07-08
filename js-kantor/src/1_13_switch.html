@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/common.css">
+    </head>
+
+    <body>
+
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Конструкция switch</h1>
+
+        <p>
+            Заменяет собой сразу несколько if.
+        </p>
+
+        <h2>Синтаксис</h2>
+<code>
+switch(x) {
+    case "value1": // if (x === "value1")
+        ... 
+        [break]
+    case "value2": // if (x === "value2")
+        ... 
+        [break]
+    default:
+        ... 
+        [break]
+}
+</code>
+        <ul>
+            <li>
+                Переменная x проверяется на строгое равенство первому значению value1, потом value2 итд 
+            </li>
+            <li>
+                Если соответствие установлено, то идет выполнение от соответствующей директивы case (называем варианты switch)
+                до ближайшего break (или до конца switch)
+            </li>
+            <li>
+                Если ни один case не совпал, то выполняется default (если есть)
+            </li>
+        </ul>
+
+        <h2>Что будет, если не указывать break</h2>
+<code>
+var a = 2 + 2;
+
+switch (a) {
+    case 3: alert("a");
+    case 4: alert("b");
+    case 5: alert("c");
+    default: alert("d");
+}
+
+// последовательно выведется b, c, d
+</code>
+
+        <h2>Группировка case</h2> 
+        <p>
+            Несколько значений case можно группировать.
+        </p>
+
+<code>
+var a = 4;
+
+switch(a) {
+    case 4: 
+        alert("cool");
+        break;
+    case 3:
+    case 5: 
+        alert("bad");
+        break;
+    default:
+        alert("weird");
+}
+</code>
+
+    </body>
+
+</html>
