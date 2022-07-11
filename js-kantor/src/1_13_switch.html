@@ -75,6 +75,109 @@ switch(a) {
     default:
         alert("weird");
 }
+
+// для 3 и 5 выведется bad
+</code>
+
+        <h2>Тип имеет значение</h2>
+        <p>
+            Что выведется при вводе 0, 1, 2 и 3?    
+        </p>
+<code>
+var arg = prompt("Enter arg");
+switch (arg) {
+    case "0":
+    case "1": 
+        alert("one or zero");
+    
+    case "2":
+        alert("two!");
+        break;
+
+    case 3:
+        alert("will never run");
+
+    default:
+        alert("unknown value: " + arg);
+}
+</code>
+        <ul>
+            <li>
+                0: Выведется one or zero, two!
+            </li>
+            <li>
+                1: Выведется one or zero, two!
+            </li>
+            <li>
+                2: Выведется two!
+            </li>
+            <li>
+                3: Выведется unknown value: 3
+            </li>
+        </ul>
+        
+        <h1>Задачи</h1>
+        <h2>Написать if, аналогичный switch</h2>
+<code>
+switch (browser) {
+    case "IE":
+        alert("OMG it is IE");
+        break;
+    
+    case "Chrome":
+    case "Firefox":
+    case "Safari":
+    case "Opera":
+        alert("yeap, we support those");
+        break;
+
+    default: 
+        alert("We hope you are not dead!");
+}
+</code>
+        <p>
+            Решение: 
+        </p>
+<code>
+const browsers = ["Chrome", "Firefox", "Safari", "Opera"];
+
+if (browser === "IE") {
+    alert("OMG you are oldboy.");
+} else if (~browsers.indexOf(browser)) {
+    alert("yeap we do");
+} else {
+    alert("douchebag!");
+}
+</code>
+
+        <h2>Переписать if-ы в switch</h2>
+<code>
+var a = +prompt("a?", "");
+
+if (a == 0) {
+    alert(0);
+}
+if (a == 1) {
+    alert(1);
+}
+if (a == 2 || a == 3) {
+    alert("2,3");
+}
+</code>
+        <p>Решение</p>
+<code>
+let a = +prompt("a?", "");
+
+switch (a) {
+    case 0:
+    case 1:
+        alert(a);
+        break;
+    case 2:
+    case 3:
+        alert("2,3");
+        break;
+}
 </code>
 
     </body>
