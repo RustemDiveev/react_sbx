@@ -8,6 +8,8 @@
 
     <body>
 
+        <script src="./js/1_14_script.js"></script>
+
         <button><a href="../start_here.html">К содержанию</a></button> 
         <h1>Функции</h1>
         <p>
@@ -192,6 +194,96 @@ function showMessage(from, text) {
             return может использоваться и без значения, чтобы прекратить выполнение и выйти из функции.
         </p>
 
+        <h2>Значение функции без return и с пустым return</h2>
+        <p>
+            В случае, когда функция не вернула значение или return был без аргументов, считается, что она вернула undefined.
+        </p>
+<code>
+function doNothing1() {}
+alert(doNothing1()); // undefined 
+
+function doNothing2() {return;}
+alert(doNothing2()); // undefined
+</code>
+
+        <h1>Задачи</h1>
+        <h2>Обязателен ли else?</h2>
+<code>
+// 1 
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    } else {
+        return confirm("Ask ur parentz!");
+    }
+}
+
+// 2 
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    }
+
+    return confirm("Ask ur parentz!");
+}
+
+// Нету отличий между поведением обоих функций, но лучше все-таки иметь один return
+</code>
+
+        <h2>Переписать функцию, используя оператор ? или ||</h2>
+<code>
+function checkAge(age) {
+    if (age > 18) {
+        return true;
+    } else {
+        return confirm("Ask ur parentz!");
+    }
+}
+</code>
+
+<code>
+// Вариант с ? 
+function checkAge1(age) {
+    return (age > 18) ? true : confirm("Ask ur parentz!");
+}
+
+// Вариант с || 
+function checkAge2(age) {
+    return (age > 18) || confirm("Ask ur parentz!");
+}
+</code>
+
+        <h2>Функция min(a, b)</h2> 
+        <div>
+            <div>
+                <label for="a_input">a</label>
+                <input type="text" id="A_INPUT" name="a_input">
+            </div>
+            <div>
+                <label for="b_input">b</label>
+                <input type="text" id="B_INPUT" name="b_input">
+            </div>
+            <div>
+                <button onclick="min()">Решение</button>
+                <span id="MIN_SOLUTION"></div>
+            </div>
+        </div>
+        
+        <h2>Функция pow(x, n)</h2>
+        <div>
+            <div>
+                <label for="x_input">x</label>
+                <input type="text" id="X_INPUT" name="x_input">
+            </div>
+            <div>
+                <label for="n_input">n</label>
+                <input type="text" id="N_INPUT" name="n_input">
+            </div>
+            <div>
+                <button onclick="pow()">Решение</button>
+                <span id="POW_SOLUTION"></div>
+            </div>
+        </div>
 
     </body>
 
