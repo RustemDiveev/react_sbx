@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/common.css">
+    </head>
+
+    <body>
+
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Функциональные выражения</h1>
+        <p>
+            В JS функция является таким же значением, как строка или число. 
+            Функцию можно вывести, например, через alert (будет выведен код функции).
+        </p>
+        <p>
+            Функцию можно скопировать в другую переменную.
+        </p>
+<code>
+function sayHi() {
+    alert("Hi");
+}    
+
+var func = sayHi;
+func(); // Hi 
+
+sayHi = null;
+sayHi(); // Error
+</code>
+        <p>
+            Можно в переменную, соответствующую названию функции, запихнуть что-то другое. 
+            И тогда функция будет недоступна.
+        </p>
+
+        <h2>Объявление функционального выражения</h2>
+        <p>
+            Существует альтернативный синтаксис для объявления функции. 
+            Называется функциональное выражение и выглядит так:
+        </p>
+<code>
+var f = function(параметры) {
+    // тело функции 
+};
+</code>
+        <ul>
+            <li>Function Declaration - функция, объявленная в основном потоке кода</li>
+            <li>Function Expression - объявление функции в контексте какого-либо выражения, например, присваивания</li>
+        </ul>
+        <p>
+            Основное отличие: Function Declaraition создаются интерпретатором до выполнения кода.
+        </p>
+        <p>
+            Поэтому их можно вызвать до объявления:
+        </p>
+<code>
+test();
+
+function test() { 
+    alert("KOO");
+}
+
+// но с функциональным выражением так не проканает
+test2();
+
+test2 = function() {
+    alert("KOO2");
+};
+</code>
+
+        <h2>Условное объявление функции</h2>
+<code>
+// с use strict - не сработает 
+// но у меня отработало без ошибки
+
+var age = prompt("How old are you?");
+
+if (age >= 18) {
+    function hi() {
+        alert("Maam");
+    }
+} else {
+    function hi() {
+        alert("Hi, dude!");
+    }
+}
+
+hi();
+
+// а вот с function expression - сработает 
+var age = prompt("How old are you?");
+
+var hi = (age >= 18) ? 
+    function() { alert("Maam"); } :
+    function() { alert("Hi, dude!"); };
+
+hi();
+</code>
+
+        <h2>Анонимные функции</h2>
+        <p>
+            Функциональное выражение, которое не записывается в переменную называют анонимной функцией.
+        </p>
+<code>
+function ask(question, yes, no) {
+    if (confirm(question)) yes() 
+    else no();
+}
+
+ask(
+    "Do you agree?",
+    function() { alert("You agreed!"); },
+    function() { alert("You disagreed!"); }
+);
+</code>
+
+        <h2>new Function</h2>
+        <p>
+            Существует еще один способ создания функции, использующийся очень редко. 
+            Позволяет создавать функцию на лету из строки, например:
+        </p>
+<code>
+var sum = new Function("a, b", "return a+b;");
+var result = sum(1, 2);
+alert(result);
+</code>
+        <p>
+            Т.е функция создается вызовом new Function(params, code), 
+            где params - параметры функции через запятую в виде строки,
+            code - код функции в виде строки
+        </p>
+        <p>
+            Пример использования: динамическая компиляция шаблонов на JavaScript.
+        </p>
+
+        <h2>Совет: если нет явной причины использовать Function Expression - то использовать Function Declaration</h2>
+        <p>
+            Function Declaration - короче и лучше читается. Такие функции можно вызвать до того, как они были объявлены.
+        </p>
+
+    </body>
+
+</html>
