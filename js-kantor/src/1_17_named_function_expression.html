@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/common.css">
+    </head>
+
+    <body>
+        
+        <script src="./js/1_17_script.js"></script>
+
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Именованные функциональные выражения</h1>
+        <p>
+            Существует специально для работы с рекурсией
+        </p>
+<code>
+var f = function(...) { /* function body */ }; // обычное функциональное выражение
+
+var f = function function_name(...) { /* function body */ }; // именованное функциональное выражение
+</code>
+        <p>
+            function_name доступно только изнутри самой функции function_name.
+            Такое ограничение входит в стандарт JS, и поддерживается всеми браузерами кроме IE8.
+        </p>
+<code>
+var f = function sayHi(name) {
+    alert(sayHi);
+}
+
+alert(sayHi); // не видно, ошибка
+
+var test = function sayHi2(name) {
+    sayHi2 = "something"; // в use strict - выдал бы ошибку 
+    alert(sayHi2); // перезаписать не удалось 
+}
+
+test();
+</code>
+
+        <h2>Примеры использования</h2>
+        <p>
+            Используется в первую очередь в тех ситуациях, когда функцию нужно передавать 
+            в другое место кода или перемещать из одной переменной в другую.
+            Внутреннее имя позволяет функции надежно обращаться к самой себе, где бы она не находилась.
+        </p>
+<code>
+function f(n) {
+    return n ? n * f(n - 1) : 1;
+}
+</code>
+    </body>
+
+</html>
