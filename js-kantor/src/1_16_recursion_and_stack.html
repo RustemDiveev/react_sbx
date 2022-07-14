@@ -111,7 +111,7 @@ pow(2, 1)
         <div>
             <label for="sum_input">Число, по которое считать сумму</label>
             <input type="text" id="SUM_INPUT" name="sum_input">
-            <button>Решение</button>
+            <button onclick="sum()">Решение</button>
             <div>
                 <span id="SUM_LOOP_RESULT"></span>
                 <span id="SUM_LOOP_ELAPSED_TIME"></span>
@@ -124,6 +124,29 @@ pow(2, 1)
                 <span id="SUM_FORMULA_RESULT"></span>
                 <span id="SUM_FORMULA_ELAPSED_TIME"></span>
             </div>
+        </div>
+        <p>
+            Самый быстрый вариант - через формулу. Самый медленный - через рекурсию. 
+            Первый - несколько арифметических операций. Последний - хранит контекст для каждого элемента последовательности.
+            При помощи рекурсии по идее нельзя посчитать sum(100000), тк глубина будет слишком большая, 
+            и есть ограничение на количество одновременно хранящихся контекстах выполнения.
+            Но в google chrome - можно.
+        </p>
+
+        <h2>Вычислить факториал</h2>
+        <div>
+            <label for="factorial_input">Число, по которому считать факториал</label>
+            <input type="text" id="FACTORIAL_INPUT" name="factorial_input">
+            <button onclick="factorial()">Решение</button>
+            <span id="FACTORIAL_RESULT"></span>
+        </div>
+
+        <h2>Числа Фибонначи</h2>
+        <div>
+            <label for="factorial_input">Введи целое число</label>
+            <input type="text" id="FIBONNACI_INPUT" name="fibonnaci_input">
+            <button onclick="fibonnaci()">Решение</button>
+            <span id="FIBONNACI_RESULT"></span>
         </div>
 
     </body>
