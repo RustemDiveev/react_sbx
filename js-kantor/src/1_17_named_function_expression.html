@@ -48,7 +48,32 @@ test();
 <code>
 function f(n) {
     return n ? n * f(n - 1) : 1;
-}
+}; 
+
+alert( f(5) ); // 120
+
+var g = f;
+f = null;
+
+alert( g(5) ); // запуск функции с новым именем - ошибка при выполнении
+
+var f = function factorial(n) {
+    return n ? n * factorial(n - 1) : 1;
+};
+
+var g = f; 
+f = null;
+
+alert( g(5) ); // 120, работает 
+</code>
+
+        <h2>Задача</h2>
+<code>
+function g() { return 1; }   
+alert(g); // выведет код функции
+
+(function g() { return 1; });
+alert(g); // выведет ошибку, что g не определено - так как это часть nfe 
 </code>
     </body>
 
