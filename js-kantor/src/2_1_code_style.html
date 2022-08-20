@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/common.css">
+    </head>
+
+    <body>
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Качество кода</h1>
+
+        <ul>
+            <li>
+                Фигурные скобки - пишутся на той же строке. Перед скобкой - пробел.
+<code>
+if (n < 0) {
+    alert("Blablabla");
+}
+</code>
+                Даже если внутри одно выражение, лучше делать не в одну строку, а в три.
+            </li>
+            <li>
+                Длина строки - 80 или 120 символов. 
+            </li>
+            <li>
+                Отступы нужны двух типов:
+                <ol>
+                    <li>
+                        Горизонтальный - при вложенности два (или четыре) пробела
+<code>
+show("Rows" + 
+    " should" + 
+    " be like that");
+</code>
+                    </li>
+                    <li>
+                        Вертикальный - перевод строки
+<code>
+function pow(x, n) {
+    var result = 1;
+
+    for (var i = 0; i < n; i++) {
+        result *= x;
+    }
+
+    return result;
+}
+</code>
+                    </li>
+                </ol>
+                Не должно быть более 9 строк кода подряд без вертикального отступа. Пустой строкой необходимо разделять логические блоки в коде.
+            </li>
+            <li>
+                Точки с запятой нужно ставить, даже если её можно пропустить.
+            </li>
+            <li>
+                Именование переменных:
+                <ul>
+                    <li>
+                        Имя переменной - существительное
+                    </li>
+                    <li>
+                        Имя функции - глагол или начинается с глагола.
+                    </li>
+                    <li>
+                        Использовать английский язык (не транслит) и верблюжью нотацию.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Уровни вложенности - их должно быть немного. 
+                Проверки в циклах, например, можно делать через continue. 
+<code>
+Вместо: 
+
+for (var i = 0; i < 10; i++) {
+    if (condition) {
+        // do something
+    }
+}
+
+Делать:
+
+for (var i = 0; i < 10; i++) {
+    if (not condition) continue;
+    // do something 
+}
+</code>
+                Лучше всегда вначале обработать простые случаи и вернуть результат. А далее разбираться со сложными случаями. 
+                Главное - не краткость кода, а простота и читаемость.
+            </li>
+            <li>
+                <p>Функции = Комментарии</p>
+                Функции должны быть небольшими. Вызов отдельной небольшой функции проще тестировать. Факт вызова - является отличным комментарием.
+<code>
+Вместо: 
+
+function showPrimes(n) {
+    nextPrime: for (var i = 2; i < n; i++) {
+
+        for (var j = 2; j < i; j++) {
+            if (i % j == 0) continue nextPrime;
+        }
+
+        alert( i );
+    }
+}
+
+Делать: 
+
+function showPrimes(n) {
+
+    for (var i = 2; i < n; i++) {
+        if (!isPrime(i)) continue;
+
+        alert( i );
+    }
+}
+
+function isPrime(n) {
+    for (var i = 2; i < n; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+</code>
+            </li>
+            <li>
+                Лучше располагать функции под кодом, который их использует.
+            </li>
+            <li>
+                Должен быть минимум комментариев, отвечающих на вопрос - что происходит в коде?
+                Перед тем как писать комментарий - возможно код недостаточно прост и необходимо переписать его.
+            </li>
+            <li>
+                Приветствуются архитектурные комментарии (как устроено); справочные комментарии перед функцией (параметры, что возвращает);
+                комментарии, объясняющие не что происходит, а почему происходит именно это.
+            </li>
+            <li>
+                Есть разные руководства по стилю:
+                <ul>
+                    <li>
+                        <a href="https://google.github.io/styleguide/javascriptguide.xml">Google JavaScript Style Guide</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/airbnb/javascript">Airbnb JavaScript Style Guide</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/rwaldron/idiomatic.js">Idiomatic.JS</a>
+                    </li>
+                    <li>
+                        <a href="https://standardjs.com/">StandardJS</a>
+                    </li>
+                </ul>
+            </li>   
+            <li>
+                Есть разные линтеры - автоматизированные средства проверки стиля кода. 
+                <ul>
+                    <li>
+                        <a href="https://www.jslint.com/">JSLint</a>
+                    </li>
+                    <li>
+                        <a href="https://jshint.com/">JSHint</a>
+                    </li>
+                    <li>
+                        <a href="https://eslint.org/">ESLint</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h1>Задача - ошибки в стиле</h1>
+<code>
+function pow(x,n)
+{
+    var result=1;
+    for(var i=0;i&lt;n;i++) {result*=x;}
+    return result;
+}
+  
+x=prompt("x?",'') 
+n=prompt("n?",'')
+if (n&lt;0)
+{
+    alert(`Степень ${n} не поддерживается, введите целую степень, большую 0`);
+}
+else
+{
+alert(pow(x,n))
+}
+</code>
+        <p>Решение</p>
+<code>
+const x = prompt("x?", "");
+const n = prompt("n?", "");
+
+n < 0 ? alert(`Степень ${n} не поддерживается, введите целую степень, большую 0`) : alert( pow(x, n) );
+
+/**
+* @name pow
+* @description Returns x with power of n
+* @param {x} number 
+* @param {n} number
+* 
+* @returns {number}
+*/
+function pow(x, n) {
+    let result = 1;
+
+    for (let i = 0; i < n; i++) {
+        result *= x;
+    }
+
+    return result;
+}
+</code>
+    </body>
+
+</html>
