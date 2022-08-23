@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- МОЧА -->
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script>
+        mocha.setup('bdd');
+    </script>
+
+    <!-- ЧАЕЦ -->
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+        let assert = chai.assert;
+    </script>
+
+    <!-- подключение тестируемого и тестов -->
+    <script>
+        function pow(x, n) {
+            let result = 1;
+
+            for (let i = 0; i < n; i++) {
+                result *= x;
+            }
+
+            return result;
+        }
+    </script>
+    <script src="./js/2_2_script.js"></script>
+</head>
+
+<body>
+    <button><a href="./2_2_automatic_tests.html">К содержанию</a></button>
+
+    <div id="mocha"></div>
+    <script>
+        mocha.run();
+    </script>
+</body>
+</html>
