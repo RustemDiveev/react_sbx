@@ -19,6 +19,10 @@
         function pow(x, n) {
             let result = 1;
 
+            if (n < 0 || !Number.isInteger(n) || (x === 0 && n === 0)) {
+                return NaN;
+            }
+
             for (let i = 0; i < n; i++) {
                 result *= x;
             }
