@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/common.css">
+
+        <!-- МОЧА -->
+        <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+        <script src="../node_modules/mocha/mocha.js"></script>
+        <script>
+            mocha.setup('bdd');
+        </script>
+
+        <!-- ЧАЕЦ -->
+        <script src="../node_modules/chai/chai.js"></script>
+        <script>
+            let assert = chai.assert;
+            let expect = chai.expect;
+        </script>
+
+        <script src="./js/3_1_script.js"></script>
+    </head>
+
+    <body>
+        <button><a href="../start_here.html">К содержанию</a></button> 
+        <h1>Введение в методы и свойства</h1>
+
+        <p>
+            Все значения в JavaScript кроме null и undefined - содержат набор вспомогательных функций и значений, 
+            доступных "через точку". Такие функции называют методами, а значения - свойствами.
+        </p>
+        <p>
+            Здесь рассматриваются основы использования свойств и методов.
+        </p>
+
+        <div id="mocha"></div>
+        <script>
+            mocha.run();
+        </script>
+    </body>
+
+</html>
