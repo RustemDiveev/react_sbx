@@ -2,7 +2,7 @@ import React from "react";
 
 const SampleComponent = () => {
     return (
-        <p>Blablabla</p>
+        <p>Hello Kitty!</p>
     );
 };
 
