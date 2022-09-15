@@ -11,7 +11,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // Позволяет не писать импорт одних и тех же модулей в каждом файле 
 // https://webpack.js.org/plugins/provide-plugin/
 
-
+// Микрофронтэнд модуль 
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const { dependencies } = require("./package.json");
 
 // module.exports - говорит, что будет экспортировано в модуле 
 /*
@@ -73,6 +75,25 @@ module.exports = {
         }),
         new webpack.ProvidePlugin({
             "React": "react"
+        }),
+        new ModuleFederationPlugin({
+            name: "Remote",
+            filename: "moduleEntry.js",
+            exposes: {
+                "./App": "./src/App",
+                "./Button": "./src/Button",
+            },
+            shared: {
+                ...dependencies,
+                react: {
+                    singleton: true,
+                    requiredVersion: dependencies["react"],
+                },
+                "react-dom": {
+                    singleton: true,
+                    requiredVersion: dependencies["react-dom"],
+                },
+            },
         })
     ]
 };
