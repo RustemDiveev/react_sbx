@@ -1,1 +1,5 @@
 js-kantor/node_modules
+webpack-module-federation-example/host/dist 
+webpack-module-federation-example/host/node_modules 
+webpack-module-federation-example/remote/node_modules 
+webpack-module-federation-example/remote/node_modules 
